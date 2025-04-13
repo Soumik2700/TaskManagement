@@ -1,30 +1,45 @@
+import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import LoadingSpinner from "./LoadingSpinner";
 
 function ProtectedRoute() {
-    const token = localStorage.getItem("authToken");
+    const [checkingAuth, setCheckingAuth] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    if (token) {
-        try {
-            const decoded = jwtDecode(token);
-            const isExpired = decoded.exp * 1000 < Date.now();
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
 
-            if (isExpired) {
+        if (token) {
+            try {
+                const decoded = jwtDecode(token);
+                const isExpired = decoded.exp * 1000 < Date.now();
+
+                if (isExpired) {
+                    localStorage.clear();
+                    setIsAuthenticated(false);
+                } else {
+                    setIsAuthenticated(true);
+                }
+            } catch (err) {
+                console.error("Invalid token:", err.message);
                 localStorage.clear();
-                return <Navigate to="/" replace />;
+                setIsAuthenticated(false);
             }
-
-            // Token is valid
-            return <Outlet />;
-        } catch (err) {
-            console.error("Invalid token:", err.message);
-            localStorage.clear();
-            return <Navigate to="/" replace />;
+        } else {
+            setIsAuthenticated(false);
         }
+
+        setTimeout(() => {
+            setCheckingAuth(false); // simulate delay for spinner
+        }, 500); // Optional delay for smoother experience
+    }, []);
+
+    if (checkingAuth) {
+        return <LoadingSpinner />;
     }
 
-    // No token
-    return <Navigate to="/" replace />;
+    return isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 export default ProtectedRoute;
