@@ -13,7 +13,7 @@ function TaskManager() {
     useEffect(() => {
         async function getTask() {
             try {
-                const response = await axios.get(`http://localhost:3000/api/readTask`, {
+                const response = await axios.get(`https://taskmanagement-kyvt.onrender.com/api/readTask`, {
                     headers: {
                         Authorization: `Bearer ${authToken}`
                     }
@@ -41,7 +41,7 @@ function TaskManager() {
 
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/createTask`,
+                `https://taskmanagement-kyvt.onrender.com/api/createTask`,
                 newTask,
                 {
                     headers: {
@@ -73,7 +73,7 @@ function TaskManager() {
         // console.log(id);
         try {
             const response = await axios.put(
-                `http://localhost:3000/api/updateTask/${id}`,
+                `https://taskmanagement-kyvt.onrender.com/api/updateTask/${id}`,
                 {
                     title: newTitle,
                     description: newDescription
@@ -101,7 +101,7 @@ function TaskManager() {
 
     const deleteTask = async (id) => {
         try{
-            const response = await axios.delete(`http://localhost:3000/api/deleteTask/${id}`,{
+            const response = await axios.delete(`https://taskmanagement-kyvt.onrender.com/api/deleteTask/${id}`,{
                 headers:{
                     Authorization: `Bearer ${authToken}`
                 }

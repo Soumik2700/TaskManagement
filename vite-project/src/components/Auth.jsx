@@ -29,7 +29,7 @@ function Auth() {
         if (isLogin) {
             // console.log("Logging in with:", user.email, user.password);
             try{
-                const response = await axios.post(`http://localhost:3000/login`,{
+                const response = await axios.post(`https://taskmanagement-kyvt.onrender.com/login`,{
                     email:user.email,
                     password: user.password
                 })
@@ -49,7 +49,7 @@ function Auth() {
             // console.log("Registering user:", user);
             // Handle register logic
             try {
-                const response = await axios.post(`http://localhost:3000/api/createUser`, user)
+                const response = await axios.post(`https://taskmanagement-kyvt.onrender.com/api/createUser`, user)
                 const data = response.data;
 
                 alert(data.message);
